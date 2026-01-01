@@ -1,12 +1,211 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>It works!</title>
-  </head>
-  <body>
-    <h1>It works!</h1>
-    <p>You've successfully registered your static web page as a service in the Freifunk Berlin network. You may replace this example page with your own static website now.</p>
-    <p>This file is located under the service root directory at $path/index.html</p>
-  </body>
+
+<head>
+  <link href="./bootstrap.min.css" rel="stylesheet">
+  <script src="./bootstrap.bundle.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8">
+  <title>SatNOGs-Wizard</title>
+</head>
+
+<body>
+  <div class="container-fluid p-1 bg-secondary text-white text-center">
+    <h1>SatNOGs-Wizard</h1>
+    <p>A tiny client-side-only tool, helping you to configure your SatNOGs station by generating configuration files.
+    </p>
+    <p>It runs entirely in your browser. No data will left your device.</p>
+  </div>
+
+  <div class="container-fluid p-3">
+
+    <div class="container">
+      <nav class="tabs justify-content-end">
+        <button data-tab="0" class="btn active">1 – General</button>
+        <button data-tab="1" class="btn">2 – Rotator</button>
+        <button data-tab="2" class="btn">3 – Misc</button>
+      </nav>
+      <button type="button" id="downloadBtn" class="btn btn-primary row float-end">Generate config</button>
+    </div>
+
+
+    <form id="wizardForm" novalidate>
+      <section class="tab-content active">
+        <!--
+        +++++++++++++++++++++++++++++
+        +     General Setup Tab     +
+        +++++++++++++++++++++++++++++
+         -->
+        <h2>General Setup</h2>
+        <p>This step asks for the bare minimum data we need to bring your station online.</p>
+
+        <div class="form-grid p-4">
+          <label for="stationId">Station ID</label>
+          <input type="number" name="stationId" min="1" required placeholder="1860">
+
+          <label for="latitude">Latitude</label>
+          <input type="number" name="latitude" step="any" min="-90" max="90" required placeholder="52.512">
+
+          <label for="longitude">Longitude</label>
+          <input type="number" name="longitude" step="any" min="-180" max="180" required placeholder="13.327">
+
+          <label for="altitude">Altitude (over sea, in m)</label>
+          <input type="number" name="altitude" step="any" min="0" max="8000" required placeholder="80">
+
+          <label for="apiToken">Network API-Token</label>
+          <input type="text" name="apiToken" required minlength="40"
+            placeholder="fafeece5f6b29e93caf7660cf27babdafe13b087">
+        </div>
+
+        <h2>Software Defined Radio</h2>
+        <p>Please input some information on your software defined radio here.</p>
+
+        <div class="p-4">
+          <div class="form-grid">
+            <label for="sdrType">SDR</label>
+            <select id="sdrType" name="sdrType" required>
+              <option value="rtlsdr">RTL-SDR</option>
+              <option value="lime">Lime Mini</option>
+            </select>
+
+            <label for="sampRate">Sample Rate</label>
+            <input type="number" name="sampRate" required value="2.048e6">
+
+            <label for="sdrAntenna">SDR Antenna Port</label>
+            <input type="text" name="sdrAntenna" required value="RX">
+
+            <label for="gainMode">Gain-Mode</label>
+            <select id="gainMode" name="gainMode" required>
+              <option value="overall">Overall</option>
+              <option value="customGain">Settings Field</option>
+            </select>
+
+          </div>
+
+          <div id="overallFields" class="hidden">
+            <div class="form-grid">
+              <label for="overallGain">RF-Gain</label>
+              <input type="number" id="overallGain" name="overallGain" step="any" min="0" , placeholder="32.8">
+            </div>
+          </div>
+
+          <div id="customGainFields" class="hidden">
+            <div class="form-grid">
+              <label for="customGain">Other Gain (Text)</label>
+              <input type="text" id="customGain" name="customGain" placeholder="TIA=8, PGA=-12, LNA=28">
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+
+      <section class="tab-content">
+        <!--
+        +++++++++++++++++++++++++++++
+        +     Rotator Setup Tab     +
+        +++++++++++++++++++++++++++++
+         -->
+        <h2>Rotator Setup</h2>
+
+        <div class="form-grid">
+          <label for="rotatorEnabled">Station has a rotator</label>
+          <label class="switch">
+            <input type="checkbox" name="rotatorEnabled" id="rotatorEnabled">
+            <span class="slider round"></span>
+          </label>
+        </div>
+
+        <div id="rotorFields" , class="hidden">
+          <div class="form-grid">
+            <label for="rotorModel">Hamlib Model (Macro)</label>
+            <input type="text" id="rotorModel" name="rotorModel" required value="ROT_MODEL_NETROTCTL">
+
+            <label for="rotorPort">Serial Port/Network Address</label>
+            <input type="text" id="rotorPort" name="rotorPort" required value="localhost:4533">
+
+            <label for="rotorBaud">Serial Port Baudrate</label>
+            <input type="number" id="rotorBaud" name="rotorBaud" min="0" value="0">
+
+            <label for="rotorThreshold">Movement Threshold (Deg.)</label>
+            <input type="number" id="rotorThreshold" name="rotorThreshold" min="0" max="180" required value="3">
+          </div>
+        </div>
+      </section>
+
+      <section class="tab-content">
+        <!--
+        ++++++++++++++++++++++++++
+        +     Misc Setup Tab     +
+        ++++++++++++++++++++++++++
+         -->
+        <h2>Miscellaneous</h2>
+        <p>Give your station a final touch with these settings. Please do only tweak, when you know what you are doing.
+        </p>
+
+        <div class="form-grid p-4">
+
+          <label for="grsatEnabled">Decode packets with gr-satellites</label>
+          <label class="switch">
+            <input type="checkbox" name="grsatEnabled" id="grsatEnabled">
+            <span class="slider round"></span>
+          </label>
+
+          <label for="grsatKeepLogs">Keep gr-satellites logs</label>
+          <label class="switch">
+            <input type="checkbox" name="grsatKeepLogs" id="grsatKeepLogs">
+            <span class="slider round"></span>
+          </label>
+
+          <label for="dumpIQDataEnabled">Dump IQ-Data</label>
+          <label class="switch">
+            <input type="checkbox" name="dumpIQDataEnabled" id="dumpIQDataEnabled">
+            <span class="slider round"></span>
+          </label>
+
+          <label for="iqdataPath">IQ-Dump Path</label>
+          <input type="text" name="iqdataPath" required value="/tmp/.satnogs/iq.raw">
+
+          <label for="preScriptEnabled">Activate Pre-Script</label>
+          <label class="switch">
+            <input type="checkbox" name="preScriptEnabled" id="preScriptEnabled">
+            <span class="slider round"></span>
+          </label>
+
+          <label for="postScriptEnabled">Activate Post-Script</label>
+          <label class="switch">
+            <input type="checkbox" name="postScriptEnabled" id="postScriptEnabled">
+            <span class="slider round"></span>
+          </label>
+
+          <label for="artifactsUploadEnabled">Upload Artifacts File (.h5)</label>
+          <label class="switch">
+            <input type="checkbox" name="artifactsUploadEnabled" id="artifactsUploadEnabled">
+            <span class="slider round"></span>
+          </label>
+
+          <label for="dbApiToken">Network API-Token</label>
+          <input type="text" name="dbApiToken" minlength="40" placeholder="c4ca71ebfdebe0aca0edb247f24b596ade83ac8a">
+
+        </div>
+      </section>
+
+      <!-- <section class="tab-content">
+      <h2>Preview</h2>
+      <p>This is a preview of the generated file:</p>
+      <pre id="preview"></pre>
+    </section> -->
+
+    </form>
+
+    <div class="nav-buttons">
+      <button id="prevBtn" class="btn btn-secondary" disabled>Previous</button>
+      <button id="nextBtn" class="btn btn-primary">Next</button>
+    </div>
+
+  </div>
+</body>
+
 </html>
