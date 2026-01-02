@@ -1,6 +1,6 @@
 # Draft: Satnogs-Config-generator
 
-This is a draft for a static website that generates an env-file for [satnogs-client](https://gitlab.com/librespacefoundation/satnogs/satnogs-client).
+This is a draft for a static website that generates an env-file for [satnogs-client](https://gitlab.com/librespacefoundation/satnogs/satnogs-client). You can access it at [https://akira25.github.io/satnogs-config-generator/](https://akira25.github.io/satnogs-config-generator/)
 
 ## Current State
 
