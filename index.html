@@ -42,20 +42,26 @@
         <p>This step asks for the bare minimum data we need to bring your station online.</p>
 
         <div class="form-grid p-4">
-          <label for="stationId">Station ID</label>
-          <input type="number" name="stationId" min="1" required placeholder="1860">
+          <label for="stationId" class="form-label">Station ID</label>
+          <input type="number" class="form-control" name="stationId" min="1" required placeholder="1860">
+          <!-- <div class="invalid-feedback">
+            Please enter a valid Station ID.
+          </div> -->
 
-          <label for="latitude">Latitude</label>
-          <input type="number" name="latitude" step="any" min="-90" max="90" required placeholder="52.512">
+          <label for="latitude" class="form-label">Latitude</label>
+          <input type="number" class="form-control" name="latitude" step="any" min="-90" max="90" required
+            placeholder="52.512">
 
-          <label for="longitude">Longitude</label>
-          <input type="number" name="longitude" step="any" min="-180" max="180" required placeholder="13.327">
+          <label for="longitude" class="form-label">Longitude</label>
+          <input type="number" class="form-control" name="longitude" step="any" min="-180" max="180" required
+            placeholder="13.327">
 
-          <label for="altitude">Altitude (over sea, in m)</label>
-          <input type="number" name="altitude" step="any" min="0" max="8000" required placeholder="80">
+          <label for="altitude" class="form-label">Altitude (over sea, in m)</label>
+          <input type="number" class="form-control" name="altitude" step="any" min="0" max="8000" required
+            placeholder="80">
 
-          <label for="apiToken">Network API-Token</label>
-          <input type="text" name="apiToken" required minlength="40"
+          <label for="apiToken" class="form-label">Network API-Token</label>
+          <input type="text" class="form-control" name="apiToken" required minlength="40"
             placeholder="fafeece5f6b29e93caf7660cf27babdafe13b087">
         </div>
 
@@ -64,19 +70,19 @@
 
         <div class="p-4">
           <div class="form-grid">
-            <label for="sdrType">SDR</label>
+            <label for="sdrType" class="form-label">SDR</label>
             <select id="sdrType" name="sdrType" required>
               <option value="rtlsdr">RTL-SDR</option>
               <option value="lime">Lime Mini</option>
             </select>
 
-            <label for="sampRate">Sample Rate</label>
-            <input type="number" name="sampRate" required value="2.048e6">
+            <label for="sampRate" class="form-label">Sample Rate</label>
+            <input type="number" class="form-control" name="sampRate" required value="2.048e6">
 
-            <label for="sdrAntenna">SDR Antenna Port</label>
-            <input type="text" name="sdrAntenna" required value="RX">
+            <label for="sdrAntenna" class="form-label">SDR Antenna Port</label>
+            <input type="text" class="form-control" name="sdrAntenna" required value="RX">
 
-            <label for="gainMode">Gain-Mode</label>
+            <label for="gainMode" class="form-label">Gain-Mode</label>
             <select id="gainMode" name="gainMode" required>
               <option value="overall">Overall</option>
               <option value="customGain">Settings Field</option>
@@ -86,15 +92,17 @@
 
           <div id="overallFields" class="hidden">
             <div class="form-grid">
-              <label for="overallGain">RF-Gain</label>
-              <input type="number" id="overallGain" name="overallGain" step="any" min="0" , placeholder="32.8">
+              <label for="overallGain" class="form-label">RF-Gain</label>
+              <input type="number" class="form-control" id="overallGain" name="overallGain" step="any" min="0" ,
+                placeholder="32.8">
             </div>
           </div>
 
           <div id="customGainFields" class="hidden">
             <div class="form-grid">
-              <label for="customGain">Other Gain (Text)</label>
-              <input type="text" id="customGain" name="customGain" placeholder="TIA=8, PGA=-12, LNA=28">
+              <label for="customGain" class="form-label">Other Gain (Text)</label>
+              <input type="text" class="form-control" id="customGain" name="customGain"
+                placeholder="TIA=8, PGA=-12, LNA=28">
             </div>
           </div>
         </div>

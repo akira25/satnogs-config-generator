@@ -24,17 +24,33 @@ function showTab(index) {
 }
 
 function validateCurrentTab() {
+    //const currentPanel = panels[currentTab];
+    //const inputs = currentPanel.querySelectorAll('input');
+    //
+    //for (const input of inputs) {
+    //    if (!input.checkValidity()) {
+    //        input.reportValidity();
+    //        return false;
+    //    }
+    //}
+    //
+    //return true;
+
     const currentPanel = panels[currentTab];
-    const inputs = currentPanel.querySelectorAll('input');
+    const inputs = currentPanel.querySelectorAll('input, select, textarea');
 
-    for (const input of inputs) {
+    let isValid = true;
+
+    inputs.forEach(input => {
         if (!input.checkValidity()) {
-            input.reportValidity();
-            return false;
+            isValid = false;
+            input.classList.add('is-invalid');
+        } else {
+            input.classList.remove('is-invalid');
         }
-    }
+    });
 
-    return true;
+    return isValid;
 }
 
 
@@ -127,7 +143,8 @@ const downloadBtn = document.getElementById('downloadBtn');
 
 downloadBtn.addEventListener('click', () => {
     if (!form.checkValidity()) {
-        form.reportValidity();
+        // form.reportValidity();
+        validateCurrentTab();
         return;
     }
 
